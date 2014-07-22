@@ -1,0 +1,32 @@
+# Where your tomcat installation lives
+CATALINA_HOME="<%= @application_dir %>"
+CATALINA_BASE="<%= @application_dir%>"
+CATALINA_TMPDIR="$CATALINA_BASE/temp"
+
+JVM_OPTS="<%= @jvm_envs %>"
+
+CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.port=9096 -Dcom.sun.management.jmxremote.password.file=$CATALINA_BASE/conf/jmxremote.password -Dcom.sun.management.jmxremote.access.file=$CATALINA_BASE/conf/jmxremote.access -Dcom.sun.management.jmxremote.ssl=false -Dlogback.configurationFile=$CATALINA_HOME/conf/tomcat-logback.xml -Djava.rmi.server.hostname=<%= @ipaddress %>"
+
+JAVA_OPTS="${JAVA_OPTS} ${JVM_OPTS}"
+
+# What user should run tomcat
+TOMCAT_USER="<%= @tomcat_user %>"
+
+TOMCAT_LOG=<%= @tomcat_log %>
+
+# You can change your tomcat locale here
+#LANG="en_US"
+
+# Run tomcat under the Java Security Manager
+#SECURITY_MANAGER="false"
+
+# Time to wait in seconds, before killing process
+SHUTDOWN_WAIT="10"
+
+# Whether to annoy the user with "attempting to shut down" messages or not
+#SHUTDOWN_VERBOSE="false"
+
+# Set the TOMCAT_PID location
+CATALINA_PID="/var/tmp/<%= @application_name %>.pid"
+
+TOMCAT_CFG=/etc/sysconfig/<%= @application_name %>

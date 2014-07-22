@@ -1,0 +1,32 @@
+#!/bin/bash
+# Comments to support chkconfig on Red Hat Linux
+# chkconfig: 2345 64 36
+# Description: Script to Start Stop Restart Tomcat
+
+JAVA_HOME=/usr/java/default
+export JAVA_HOME
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+TOMCAT_HOME=<%= @application_dir %>
+#CATALINA_PID=/var/tmp/<%= @application_name %>.pid
+export CATALINA_PID
+case $1 in
+start)
+echo "Starting \"<%= @application_name %>\"..."
+/bin/su <%= @tomcat_user %> $TOMCAT_HOME/bin/startup.sh
+echo "Startup finished."
+;;
+stop)
+echo "Shutting down \"<%= @application_name %>\""
+/bin/su <%= @tomcat_user %> $TOMCAT_HOME/bin/shutdown.sh
+echo "Shutdown finished."
+;;
+restart)
+echo "Restarting \"<%= @application_name %>\"..."
+/bin/su <%= @tomcat_user %> $TOMCAT_HOME/bin/shutdown.sh
+echo "Shutdown finished."
+/bin/su <%= @tomcat_user %> $TOMCAT_HOME/bin/startup.sh
+echo "Startup finished."
+;;
+esac
+exit 0

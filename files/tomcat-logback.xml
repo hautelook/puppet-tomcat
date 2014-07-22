@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	-Dlogback.configurationFile=$CATALINA_HOME/conf/tomcat-logback.xml
+-->
+
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+	<!--<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />-->
+
+	<property name="logs-folder" value="${catalina.base}/logs" />
+
+	<insertFromJNDI env-entry-name="java:comp/env/appName" as="appName" />
+	<contextName>${appName}</contextName>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE-REDUCED" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logs-folder}/${appName}-${HOSTNAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logs-folder}/${appName}-${HOSTNAME}.%d{yyyyMMdd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %-5level %logger{32} [%thread] ${CONTEXT_NAME} %X %replace(%msg){'\n', '\\n'}%n%throwable{short}</pattern>
+		</encoder>		
+	</appender>
+
+	<appender name="FILE-EXPANDED" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logs-folder}/${appName}-${HOSTNAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logs-folder}/${appName}-${HOSTNAME}.%d{yyyyMMdd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %-5level %logger{32} [%thread] ${CONTEXT_NAME} %X %replace(%msg){'\n', '\\n'}%n%throwable{short}</pattern>
+		</encoder>		
+	</appender>
+	
+	<appender name="ASYNC-REDUCED" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<appender-ref ref="FILE-REDUCED" />
+	</appender>	
+
+	<appender name="ASYNC-EXPANDED" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<appender-ref ref="FILE-EXPANDED" />
+	</appender>	
+	
+	<!-- ================================================ -->
+	<!-- Logger and configuration for 3rd party libraries -->
+	<!-- Log to server log file and console only          -->
+	<!-- ================================================ -->
+
+	<logger name="org.apache" level="INFO" />
+	<logger name="jacorb" level="WARN" />
+	<logger name="org.jgroups" level="WARN" />
+	<logger name="org.quartz" level="INFO" />
+	<logger name="com.sun" level="INFO" />
+	<logger name="sun"  level="INFO" />
+	<logger name="javax.xml.bind"  level="INFO" />
+	<logger name="org.springframework"  level="OFF" />
+	<logger name="facelets.compiler"  level="WARN" />
+	<logger name="org.ajax4jsf.cache"  level="WARN" />
+	<logger name="org.rhq" level="WARN" />
+	<logger name="org.mc4j.ems" level="WARN" />
+	<logger name="com.opensymphony.oscache" level="WARN" />
+	<logger name="org.apache.activemq.transport.InactivityMonitor" level="WARN" />
+	<logger name="org.hibernate" level="OFF" />
+	<logger name="org.hornetq" level="DEBUG" />
+	<logger name="httpclient.wire" level="WARN" />
+	<logger name="com.arjuna.ats.jta.logging.loggerI18N" level="ERROR" />
+	<logger name="org.enhydra" level="ERROR" />
+	<logger name="ch.qos.logback" level="INFO" />
+	<logger name="com.technicolor" level="DEBUG" />
+	
+	<!-- Root logger -->
+	<root level="WARN">   
+		<appender-ref ref="ASYNC-REDUCED" />	
+		<!--<appender-ref ref="ASYNC-EXPANDED" />-->
+	</root>  
+
+</configuration>
