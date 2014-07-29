@@ -29,6 +29,9 @@ export CATALINA_BASE=<%= @application_dir %>
 #TOMCAT_USER is the default user of tomcat
 export TOMCAT_USER=<%= @tomcat_user %>
 
+#CATALINA_PID is the path to the pidfile
+export CATALINA_PID=<%= @tomcat_pidfile %>
+
 #TOMCAT_USAGE is the message if this script is called without any options
 TOMCAT_USAGE="Usage: $0 {\e[00;32mstart\e[00m|\e[00;31mstop\e[00m|\e[00;32mstatus\e[00m|\e[00;31mrestart\e[00m}"
 
@@ -36,7 +39,12 @@ TOMCAT_USAGE="Usage: $0 {\e[00;32mstart\e[00m|\e[00;31mstop\e[00m|\e[00;32mstatu
 SHUTDOWN_WAIT=20
 
 tomcat_pid() {
-  echo `ps -fe | grep $CATALINA_BASE | grep -v grep | tr -s " "|cut -d" " -f2`
+  if [ -e $CATALINA_PID ]
+  then
+   cat $CATALINA_PID 
+  else
+    echo ""
+  fi
 }
 
 start() {
@@ -86,6 +94,8 @@ stop() {
     if [ $count -gt $kwait ]; then
       echo -n -e "\n\e[00;31mkilling processes which didn't stop after $SHUTDOWN_WAIT seconds\e[00m"
       kill -9 $pid
+      echo -n -e "\n\e[00;31mRemoving pidfile $CATALINA_PID\e[00m"
+      rm $CATALINA_PID
     fi
   else
     echo -e "\e[00;31mTomcat is not running\e[00m"

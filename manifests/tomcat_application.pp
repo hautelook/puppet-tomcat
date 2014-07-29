@@ -9,6 +9,7 @@ define tomcat::tomcat_application (
   $tomcat_port,
   $tomcat_shutdown_port,
   $jvm_envs,
+  $tomcat_pidfile        = "/var/tmp/${application_name}.pid",
   $tomcat_admin_user     = 'tomcat',
   $tomcat_admin_password = 's3cr3t',
   $jmxRegistryPort       = 10052,
