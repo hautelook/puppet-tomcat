@@ -1,5 +1,5 @@
-name    'tomcat'
-version '0.1.0'
+name    'hautelook-tomcat'
+version '0.2.1'
 source 'UNKNOWN'
 author 'puppet'
 license 'Apache License, Version 2.0'
