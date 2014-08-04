@@ -9,6 +9,7 @@ define tomcat::tomcat_application (
   $tomcat_port,
   $tomcat_shutdown_port,
   $jvm_envs,
+  $classpath_append,
   $tomcat_pidfile        = "/var/tmp/${application_name}.pid",
   $tomcat_admin_user     = 'tomcat',
   $tomcat_admin_password = 's3cr3t',
@@ -109,8 +110,6 @@ exec { "extract_tomcat_archive_${application_name}":
     notify  => Service[ $application_name ],
   }
 
-
-
   file { "${application_dir}/bin/setenv.sh":
     content => template('tomcat/setenv.erb'),
     require => Exec["${application_dir}-mv-${tomcat_version}"],
@@ -119,6 +118,12 @@ exec { "extract_tomcat_archive_${application_name}":
 
   file { "${application_dir}/conf/server.xml":
     content => template('tomcat/server.xml.erb'),
+    require => Exec["${application_dir}-mv-${tomcat_version}"],
+    notify  => Service[ $application_name ],
+  }
+
+  file { "${application_dir}/conf/catalina.properties":
+    content => template('tomcat/catalina.properties.erb'),
     require => Exec["${application_dir}-mv-${tomcat_version}"],
     notify  => Service[ $application_name ],
   }
