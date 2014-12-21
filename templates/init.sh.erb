@@ -83,6 +83,7 @@ stop() {
     echo -e "\e[00;31mStopping Tomcat\e[00m"
     #/bin/su -p -s /bin/sh tomcat
     sh $CATALINA_HOME/bin/shutdown.sh
+    # The above doesn't always clean up nicely. This will handle edge cases
     let kwait=$SHUTDOWN_WAIT
     count=0;
     until [ `ps -p $pid | grep -c $pid` = '0' ] || [ $count -gt $kwait ]
@@ -94,6 +95,8 @@ stop() {
     if [ $count -gt $kwait ]; then
       echo -n -e "\n\e[00;31mkilling processes which didn't stop after $SHUTDOWN_WAIT seconds\e[00m"
       kill -9 $pid
+    fi
+    if [ -n "$pid" ]; then 
       echo -n -e "\n\e[00;31mRemoving pidfile $CATALINA_PID\e[00m"
       rm $CATALINA_PID
     fi
