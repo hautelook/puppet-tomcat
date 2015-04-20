@@ -38,7 +38,6 @@ define tomcat::tomcat_application (
   $tomcat_log = "${application_dir}/logs/catalina.out"
 
   if $tomcat_base == '7' {
-    notify { 'tomcat-base-is-7': message => 'Tomcat base is 7' }
     $tomcat_version = $tomcat::params::tomcat_7
   }
   else {
