@@ -9,7 +9,7 @@ Features
 
 ## Install
 
-    puppet module install llehmijo/tomcat7_rhel
+    Add this to a Puppetfile!
 
 ## Example usage
 
@@ -17,7 +17,7 @@ Features
 
     # In site.pp
     node "superserver" {
-      tomcat7_rhel::tomcat_application { "my-web-application":
+      tomcat::tomcat_application { "my-web-application":
         application_root => "/opt",
         tomcat_user => "webuser",
         tomcat_port => "8080",
@@ -29,7 +29,7 @@ Features
         jmxServerPort => 10053
       }
 
-      tomcat7_rhel::tomcat_application { "my-second-application":
+      tomcat::tomcat_application { "my-second-application":
         application_root => "/opt",
         tomcat_user => "webuser",
         tomcat_port => "8090",
@@ -92,8 +92,3 @@ You can run the tests like this:
 
     bundle install # Installs the Ruby gems that we use for testing
     rake
-
-## Links
-
-This project in Puppet Forge:
-<http://forge.puppetlabs.com/llehmijo/tomcat7_rhel>.

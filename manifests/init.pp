@@ -3,6 +3,6 @@
 #
 class tomcat {
 
-  include java_install
+  class { 'java': package => 'jdk1.8.0_45' }
 
 }
