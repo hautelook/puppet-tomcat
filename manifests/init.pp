@@ -3,6 +3,6 @@
 #
 class tomcat {
 
-  class { 'java': package => 'jdk1.8.0_45' }
+  fail('Use the tomcat_application type')
 
 }

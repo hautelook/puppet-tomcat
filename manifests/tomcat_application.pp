@@ -9,20 +9,22 @@ define tomcat::tomcat_application (
   $tomcat_port,
   $tomcat_shutdown_port,
   $jvm_envs,
+  $java_package_name     = 'jdk',
   $classpath_append      = undef,
   $tomcat_pidfile        = "/var/tmp/${application_name}.pid",
   $tomcat_admin_user     = 'tomcat',
   $tomcat_admin_password = 's3cr3t',
   $jmxRegistryPort       = 10052,
   $jmxServerPort         = 10051) {
-  include tomcat
   include tomcat::params
 
+  class { 'java': package => $java_package_name }
 
 # We handle the special Jenkins user elsewhere. Don't create it in the tomcat module
   if $tomcat_user != 'jenkins' {
     group { $tomcat_user:
-      ensure => present
+      ensure  => present,
+      require => Class['java'],
     }
 
     user { $tomcat_user:
