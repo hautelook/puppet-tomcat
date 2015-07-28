@@ -140,15 +140,18 @@
         <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
         -->
 
+        <% if @access_logging == true -%>
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html
              Note: The pattern used is equivalent to using common -->
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+        <Valve className="org.apache.catalina.valves.AccessLogValve" 
+               directory="logs"
                prefix="access_log" suffix=".txt"
                pattern="%t %D %b %h %{X-Forwarded-For}i [%S] %H %m %U %s { &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; &quot;%{Authorization}i&quot; }"
-               rotatable="false"
+               rotatable="true"
                renameOnRotate="true"
                resolveHosts="false" />
+        <% end -%>
       </Host>
     </Engine>
   </Service>

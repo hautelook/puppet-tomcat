@@ -9,6 +9,7 @@ define tomcat::tomcat_application (
   $tomcat_port,
   $tomcat_shutdown_port,
   $jvm_envs,
+  $access_logging        = false,
   $java_package_name     = 'jdk',
   $classpath_append      = undef,
   $tomcat_pidfile        = "/var/tmp/${application_name}.pid",
